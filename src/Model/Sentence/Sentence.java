@@ -57,13 +57,25 @@ public class Sentence {
     }
 
     public Pair<Operation, Integer> returnOperation() {
-        if (this.type == Structure.atomic) {
-            return null;
-        } else if (this.type == Structure.unary) {
-            Operation operation = PropOperation.valueOf(this.operator + subsentence.get(0).operator);
-            return new Pair(operation, 1);
-        } else {
-            return new Pair(Structure.valueOf(operator), 2);
+        switch (this.type) {
+            case atomic:
+                return null;
+            case unary:
+                Operation operation = PropOperation.valueOf(this.operator + subsentence.get(0).operator);
+                return new Pair(operation, 1);
+            case binary:
+                return new Pair(Structure.valueOf(operator), 2);
+        }
+    }
+
+    public String returnSentence() {
+        switch (this.type) {
+            case atomic:
+                return atomicSentence;
+            case unary:
+                return operator + subsentence.get(0);
+            case binary:
+                return  subsentence.get(0) + operator + subsentence.get(1);
         }
     }
 
