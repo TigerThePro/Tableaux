@@ -56,13 +56,15 @@ public class Sentence {
         check = false;
     }
 
-//    public Pair<Operation, Integer> returnOperation() {
-//        if (this.type == Structure.atomic) {
-//            return null;
-//        } else {
-//            Operation operation = PropOperation.valueOf(this.operator + subsentence.get(0).operator);
-//            return operation;
-//        }
-//    }
+    public Pair<Operation, Integer> returnOperation() {
+        if (this.type == Structure.atomic) {
+            return null;
+        } else if (this.type == Structure.unary) {
+            Operation operation = PropOperation.valueOf(this.operator + subsentence.get(0).operator);
+            return new Pair(operation, 1);
+        } else {
+            return new Pair(Structure.valueOf(operator), 2);
+        }
+    }
 
 }
