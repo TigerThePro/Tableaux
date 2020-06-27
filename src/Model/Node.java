@@ -16,12 +16,24 @@ public class Node {
 
     public List<Sentence> sentenceList;
     public List<Sentence> sentenceOperation;
-    public List<Sentence> simpleSentencs;
+    public List<Sentence> simpleSentences;
     public List<Node> children;
     public boolean open;
 
     public Node(List<Sentence> simpleSentence) {
         sentenceList = new ArrayList<Sentence>();
-
+        sentenceOperation = new ArrayList<Sentence>();
+        simpleSentences = new ArrayList<Sentence>();
+        children = new ArrayList<Node>();
+        open = true;
     }
+
+    // Add sentence
+    public void addSentence(Sentence sentence) {
+        if (open) {
+            sentenceList.add(sentence);
+        }
+    }
+
+    //
 }
