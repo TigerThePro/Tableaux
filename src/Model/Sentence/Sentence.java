@@ -30,7 +30,7 @@ public class Sentence {
         atomicSentence = input;
         subsentence = null;
         operator = null;
-        check = false;
+        check = true;
         operation = PropOperation.none;
     }
 

@@ -29,7 +29,7 @@ class SentenceTest {
             PropOperation.none, PropOperation.none, PropOperation.or, PropOperation.implies,
             PropOperation.notor, PropOperation.and, PropOperation.iff, PropOperation.notimplies };
 
-    private boolean[] sentenceChecks = {false, true, true, false, false, false, true, true};
+    private boolean[] sentenceChecks = {true, true, true, false, false, false, true, true};
 
     private int[] sentencePriority = {0, 0, 2, 2, 1, 1, 2, 1};
 

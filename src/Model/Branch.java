@@ -1,6 +1,7 @@
 package Model;
 
 import Model.Sentence.Sentence;
+import org.omg.CORBA.INTERNAL;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,6 +24,8 @@ public class Branch {
         extension = new ArrayList<Branch>();
         open = true;
         processSentences(sentences);
+
+
     }
 
 
@@ -53,8 +56,19 @@ public class Branch {
 
 
     // Helper
+    // Order operation
+    public void checkBranchOpen() {
+        Iterator<Sentence>
+    }
+
+
+
+
+
+
+    // Helper
     // Check for contradiction for a simple sentence.
-    public boolean checkContra(Sentence sen) {
+    private boolean checkContra(Sentence sen) {
         Iterator<Sentence> j = simpleList.iterator();
         if (sen.type == Structure.atomic) {
             while (j.hasNext()) {
