@@ -1,7 +1,7 @@
 package Model;
 
+import Model.Operation.PropOperation;
 import Model.Sentence.Sentence;
-import org.omg.CORBA.INTERNAL;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +11,12 @@ import java.util.Iterator;
 public class Branch {
 
     public ArrayList<Sentence> sentenceList;
-    public ArrayList<Sentence> todoList;
+    /* Making to lists for operation, so there
+    is no need for priority queue
+    */
+    public ArrayList<Sentence> todoList1;
+    public ArrayList<Sentence> todoList2;
+
     public ArrayList<Sentence> simpleList;
     public ArrayList<Branch> extension;
     public boolean open;
@@ -19,18 +24,44 @@ public class Branch {
 
     public Branch(ArrayList<Sentence> sentences) {
         sentenceList = new ArrayList<Sentence>();
-        todoList = new ArrayList<Sentence>();
+        todoList1 = new ArrayList<Sentence>();
+        todoList2 = new ArrayList<Sentence>();
         simpleList = new ArrayList<Sentence>();
         extension = new ArrayList<Branch>();
         open = true;
         processSentences(sentences);
+        checkBranchOpen();
+        if (open) {
+            orderOperation();
+        }
+    }
 
+    public Branch(Sentence sentence, ArrayList<Sentence> operations1, ArrayList<Sentence> operation2,
+                  ArrayList<Sentence> simps) {
+        sentenceList = new ArrayList<Sentence>();
+        todoList1 = operations1;
+        todoList2 = simps;
+        extension = new ArrayList<Branch>();
+
+        addSentence(sentence);
 
     }
 
 
-//    public void addSentence
+    public void addSentence(Sentence sentence) {
+        if (open) {
+            sentenceList.add(sentence);
+            if (!checkContra(sentence)) {
+                addOperation(sentence);
+            } else {
+                open = false;
+            }
+        }
+    }
 
+//    public void extend(Node) {
+//
+//    }
 
 
 
@@ -58,10 +89,26 @@ public class Branch {
     // Helper
     // Order operation
     public void checkBranchOpen() {
-        Iterator<Sentence>
+        Iterator<Sentence> i = sentenceList.iterator();
+        while(i.hasNext()) {
+            Sentence temp = i.next();
+            if (checkContra(temp)) {
+                open = false;
+                break;
+            }
+        }
     }
 
 
+    // Helper
+    // Order Operation
+    private void orderOperation() {
+        Iterator<Sentence> i = sentenceList.iterator();
+        while (i.hasNext()) {
+            addOperation(i.next());
+        }
+
+    }
 
 
 
@@ -89,5 +136,14 @@ public class Branch {
         return false;
     }
 
-
+    // Helper
+    // addOperaton
+    private void addOperation(Sentence sentence) {
+        int p = sentence.returnPriority();
+        if (p == 1) {
+            todoList1.add(sentence);
+        } else if (p == 2) {
+            todoList2.add(sentence);
+        }
+    }
 }
