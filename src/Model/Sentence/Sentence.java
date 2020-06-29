@@ -61,7 +61,7 @@ public class Sentence {
 
 
     // Return the operation to do fro this sentence
-    public Operation returnOperation() {
+    public PropOperation returnOperation() {
         return operation;
     }
 

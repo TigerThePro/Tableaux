@@ -18,7 +18,11 @@ public class Branch {
     public ArrayList<Sentence> todoList2;
 
     public ArrayList<Sentence> simpleList;
-    public ArrayList<Branch> extension;
+
+    public Branch left;
+    public Branch right;
+//    public ArrayList<Branch> extension;
+
     public boolean open;
 
 
@@ -27,7 +31,11 @@ public class Branch {
         todoList1 = new ArrayList<Sentence>();
         todoList2 = new ArrayList<Sentence>();
         simpleList = new ArrayList<Sentence>();
-        extension = new ArrayList<Branch>();
+
+        left = null;
+        right = null;
+//        extension = new ArrayList<Branch>();
+
         open = true;
         processSentences(sentences);
         checkBranchOpen();
@@ -36,14 +44,21 @@ public class Branch {
         }
     }
 
-    public Branch(Sentence sentence, ArrayList<Sentence> operations1, ArrayList<Sentence> operation2,
+    public Branch(Sentence sentence, ArrayList<Sentence> operation2,
                   ArrayList<Sentence> simps) {
         sentenceList = new ArrayList<Sentence>();
-        todoList1 = operations1;
-        todoList2 = simps;
-        extension = new ArrayList<Branch>();
+        todoList1 = new ArrayList<Sentence>();
+        todoList2 = (ArrayList<Sentence>)operation2.clone();
+        simpleList = (ArrayList<Sentence>)simps.clone();;
 
-        addSentence(sentence);
+        left = null;
+        right = null;
+//        extension = new ArrayList<Branch>();
+
+        checkBranchOpen();
+        if (open) {
+            addSentence(sentence);
+        }
 
     }
 
@@ -59,11 +74,14 @@ public class Branch {
         }
     }
 
-//    public void extend(Node) {
-//
+    public void extend(Branch left, Branch right) {
+        this.left = left;
+        this.right = right;
+    }
+
+//    public String returnTree() {
+//        /
 //    }
-
-
 
 
 
@@ -107,7 +125,6 @@ public class Branch {
         while (i.hasNext()) {
             addOperation(i.next());
         }
-
     }
 
 

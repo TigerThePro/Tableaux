@@ -9,5 +9,6 @@ public enum PropOperation implements Operation {
     notimplies,
     notand,
     notor,
-    notiff
+    notiff,
+    notnot
 }
