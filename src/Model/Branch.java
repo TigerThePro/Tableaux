@@ -97,7 +97,9 @@ public class Branch {
             sentenceList.add(temp);
             if (temp.type == Structure.atomic ||
                     (temp.type == Structure.unary && temp.subsentence.get(0).type == Structure.atomic)) {
-                simpleList.add(temp);
+                if (! simpleList.contains(temp)) {
+                    simpleList.add(temp);
+                }
             }
         }
     }
@@ -142,7 +144,7 @@ public class Branch {
                     return true;
                 }
             }
-        } else {
+        } else if(sen.type == Structure.unary && sen.subsentence.get(0).type == Structure.atomic){
             while (j.hasNext()) {
                 Sentence jSentence = j.next();
                 if (sen.subsentence.get(0).returnSentence() == jSentence.returnSentence()) {
@@ -154,7 +156,7 @@ public class Branch {
     }
 
     // Helper
-    // addOperaton
+    // addOperation
     private void addOperation(Sentence sentence) {
         int p = sentence.returnPriority();
         if (p == 1) {
