@@ -22,6 +22,7 @@ class BranchTest {
     private ArrayList<Sentence> sentenceList = new ArrayList<Sentence>();
 
     // two atomic sentence
+    // p , q
     @Test
     void testConstructor1() {
         sentenceList.add(s1);
@@ -37,6 +38,7 @@ class BranchTest {
             assertEquals(sentenceList.get(i).returnSentence(),
                     branch.sentenceList.get(i).returnSentence());
         }
+        assertEquals("[p, q]", branch.returnBranch());
     }
 
     // p, not p
@@ -53,6 +55,7 @@ class BranchTest {
             assertEquals(sentenceList.get(i).returnSentence(),
                     branch.simpleList.get(i).returnSentence());
         }
+        assertEquals("[p, not p]", branch.returnBranch());
     }
 
     // not not p
@@ -67,6 +70,8 @@ class BranchTest {
         assertEquals(0, branch.simpleList.size());
 //        assertEquals("p", branch.simpleList.get(0).returnSentence());
 //        assertEquals(true, branch.sentenceList.get(0).check);
+
+        assertEquals("[not (not p)]", branch.returnBranch());
     }
 
     // p, p or q, not (p or q)
@@ -82,14 +87,9 @@ class BranchTest {
         assertEquals(1, branch.todoList1.size());
         assertEquals(1, branch.todoList2.size());
         assertEquals(1, branch.simpleList.size());
-//        Sentence[] expected = {s1, s4, s6, s3};
-//        Sentence[] expectedSimple = {s1, s4};
-//        for (int i = 0; i < 5; i++) {
-//            assertEquals(expected[i].returnSentence(), branch.sentenceList.get(i).returnSentence());
-//        }
-//        for (int i = 0; i < 2; i++) {
-//            assertEquals(expectedSimple[i].returnSentence(), branch.sentenceList.get(i).returnSentence());
-//        }
+
+        assertEquals("[p, p or q, not (p or q)]", branch.returnBranch());
+
     }
 
 

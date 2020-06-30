@@ -21,7 +21,7 @@ public class Branch {
 
     public Branch left;
     public Branch right;
-//    public ArrayList<Branch> extension;
+    public ArrayList<Branch> extension;
 
     public boolean open;
 
@@ -44,21 +44,22 @@ public class Branch {
         }
     }
 
-    public Branch(Sentence sentence, ArrayList<Sentence> operation2,
+    public Branch(ArrayList<Sentence> sentences, ArrayList<Sentence> operation2,
                   ArrayList<Sentence> simps) {
-        sentenceList = new ArrayList<Sentence>();
+        sentenceList = sentences;
         todoList1 = new ArrayList<Sentence>();
         todoList2 = (ArrayList<Sentence>)operation2.clone();
-        simpleList = (ArrayList<Sentence>)simps.clone();;
+        simpleList = (ArrayList<Sentence>)simps.clone();
 
         left = null;
         right = null;
-//        extension = new ArrayList<Branch>();
 
+        processSentences(sentences);
         checkBranchOpen();
         if (open) {
-            addSentence(sentence);
+            orderOperation();
         }
+
 
     }
 
@@ -74,14 +75,26 @@ public class Branch {
         }
     }
 
-    public void extend(Branch left, Branch right) {
+    public void addChild(Branch left, Branch right) {
         this.left = left;
         this.right = right;
     }
 
-//    public String returnTree() {
-//        /
-//    }
+    public String returnBranch() {
+        String thisNode = "[";
+        for (int i = 0; i < sentenceList.size(); i++) {
+            if (i != 0) {
+                thisNode = thisNode + ", " +  sentenceList.get(i).returnSentence();
+            } else {
+                thisNode = thisNode + sentenceList.get(i).returnSentence();
+            }
+        }
+        if (left != null && right != null) {
+            thisNode = thisNode + left.returnBranch() + right.returnBranch();
+        }
+        return thisNode + "]";
+
+    }
 
 
 
@@ -90,7 +103,7 @@ public class Branch {
     // updates sentenceList, todoList, simpleList
     // then if contradictions exists closes branch.
 
-    public void processSentences(ArrayList<Sentence> sentences) {
+    private void processSentences(ArrayList<Sentence> sentences) {
         Iterator<Sentence> i = sentences.iterator();
         while (i.hasNext()) {
             Sentence temp =i.next();
@@ -108,7 +121,7 @@ public class Branch {
 
     // Helper
     // Order operation
-    public void checkBranchOpen() {
+    private void checkBranchOpen() {
         Iterator<Sentence> i = sentenceList.iterator();
         while(i.hasNext()) {
             Sentence temp = i.next();
