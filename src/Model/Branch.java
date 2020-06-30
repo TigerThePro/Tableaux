@@ -1,11 +1,8 @@
 package Model;
 
-import Model.Operation.PropOperation;
 import Model.Sentence.Sentence;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 
 public class Branch {
@@ -21,7 +18,6 @@ public class Branch {
 
     public Branch left;
     public Branch right;
-    public ArrayList<Branch> extension;
 
     public boolean open;
 
@@ -34,19 +30,14 @@ public class Branch {
 
         left = null;
         right = null;
-//        extension = new ArrayList<Branch>();
 
         open = true;
         processSentences(sentences);
-        checkBranchOpen();
-        if (open) {
-            orderOperation();
-        }
     }
 
     public Branch(ArrayList<Sentence> sentences, ArrayList<Sentence> operation2,
                   ArrayList<Sentence> simps) {
-        sentenceList = sentences;
+        sentenceList = new ArrayList<Sentence>();
         todoList1 = new ArrayList<Sentence>();
         todoList2 = (ArrayList<Sentence>)operation2.clone();
         simpleList = (ArrayList<Sentence>)simps.clone();
@@ -54,12 +45,8 @@ public class Branch {
         left = null;
         right = null;
 
+        open = true;
         processSentences(sentences);
-        checkBranchOpen();
-        if (open) {
-            orderOperation();
-        }
-
 
     }
 
@@ -67,10 +54,13 @@ public class Branch {
     public void addSentence(Sentence sentence) {
         if (open) {
             sentenceList.add(sentence);
-            if (!checkContra(sentence)) {
-                addOperation(sentence);
+            if (sentence.type == Structure.atomic ||
+                    (sentence.type == Structure.unary && sentence.subsentence.get(0).type == Structure.atomic)) {
+                if (!checkContra(sentence) && !simpleList.contains(sentence)) {
+                    simpleList.add(sentence);
+                }
             } else {
-                open = false;
+                addOperation(sentence);
             }
         }
     }
@@ -90,7 +80,7 @@ public class Branch {
             }
         }
         if (left != null && right != null) {
-            thisNode = thisNode + left.returnBranch() + right.returnBranch();
+            thisNode = thisNode + " " + left.returnBranch() + " " + right.returnBranch();
         }
         return thisNode + "]";
 
@@ -104,67 +94,39 @@ public class Branch {
     // then if contradictions exists closes branch.
 
     private void processSentences(ArrayList<Sentence> sentences) {
-        Iterator<Sentence> i = sentences.iterator();
-        while (i.hasNext()) {
-            Sentence temp =i.next();
-            sentenceList.add(temp);
-            if (temp.type == Structure.atomic ||
-                    (temp.type == Structure.unary && temp.subsentence.get(0).type == Structure.atomic)) {
-                if (! simpleList.contains(temp)) {
-                    simpleList.add(temp);
-                }
-            }
+        for (int i = 0; i < sentences.size(); i++) {
+            Sentence temp =sentences.get(i);
+            addSentence(temp);
+
         }
     }
-
-
-
-    // Helper
-    // Order operation
-    private void checkBranchOpen() {
-        Iterator<Sentence> i = sentenceList.iterator();
-        while(i.hasNext()) {
-            Sentence temp = i.next();
-            if (checkContra(temp)) {
-                open = false;
-                break;
-            }
-        }
-    }
-
-
-    // Helper
-    // Order Operation
-    private void orderOperation() {
-        Iterator<Sentence> i = sentenceList.iterator();
-        while (i.hasNext()) {
-            addOperation(i.next());
-        }
-    }
-
 
 
 
     // Helper
     // Check for contradiction for a simple sentence.
+    // return true if it's a contradiction
     private boolean checkContra(Sentence sen) {
-        Iterator<Sentence> j = simpleList.iterator();
-        if (sen.type == Structure.atomic) {
-            while (j.hasNext()) {
-                Sentence jSentence = j.next();
-                if (jSentence.type == Structure.unary &&
-                        sen.returnSentence() == jSentence.subsentence.get(0).returnSentence()){
-                    return true;
+        System.out.println(sen.returnSentence());
+            Iterator<Sentence> j = simpleList.iterator();
+            if (sen.type == Structure.atomic) {
+                while (j.hasNext()) {
+                    Sentence jSentence = j.next();
+                    if (jSentence.returnSentence().equals("not " + sen.returnSentence())) {
+                        open = false;
+                        return true;
+                    }
+                }
+            } else if (sen.type == Structure.unary && sen.subsentence.get(0).type == Structure.atomic) {
+                while (j.hasNext()) {
+                    Sentence jSentence = j.next();
+                    if (sen.returnSentence().equals("not " + jSentence.returnSentence())) {
+                        open = false;
+                        return true;
+                    }
                 }
             }
-        } else if(sen.type == Structure.unary && sen.subsentence.get(0).type == Structure.atomic){
-            while (j.hasNext()) {
-                Sentence jSentence = j.next();
-                if (sen.subsentence.get(0).returnSentence() == jSentence.returnSentence()) {
-                    return true;
-                }
-            }
-        }
+//        }
         return false;
     }
 

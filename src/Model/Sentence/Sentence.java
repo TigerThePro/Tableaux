@@ -1,4 +1,5 @@
 package Model.Sentence;
+
 import Model.Operation.Operation;
 import Model.Operation.PropOperation;
 import Model.Structure;
@@ -14,7 +15,7 @@ import java.util.List;
 public class Sentence {
 
 
-//    public boolean atomic;
+    //    public boolean atomic;
     public Structure type;
     public List<Sentence> subsentence;
     public String operator;
@@ -68,7 +69,8 @@ public class Sentence {
     // Return priority of this sentence
     // priority is the number of extension the operation takes
     public int returnPriority() {
-        if (type == Structure.atomic) {
+        if (type == Structure.atomic ||
+                (type == Structure.unary && subsentence.get(0).type == Structure.atomic)) {
             return 0;
         } else {
             switch (this.operation) {
@@ -97,7 +99,7 @@ public class Sentence {
             case binary:
                 String sen1 = getString(subsentence.get(0));
                 String sen2 = getString(subsentence.get(1));
-                return  sen1 + " " + operator + " " + sen2;
+                return sen1 + " " + operator + " " + sen2;
             default:
                 return atomicSentence;
         }
@@ -115,7 +117,7 @@ public class Sentence {
 
     // Helper
     // get the operation
-    private PropOperation getOperation(){
+    private PropOperation getOperation() {
         switch (this.type) {
             case unary:
                 if (subsentence.get(0).type != Structure.atomic) {

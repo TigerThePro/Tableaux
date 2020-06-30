@@ -1,6 +1,7 @@
 package tests;
 
 import Model.Branch;
+import Model.Operation.PropOperation;
 import Model.Sentence.Sentence;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,12 +47,12 @@ class BranchTest {
     void testConstructor2() {
         sentenceList.add(s1);
         sentenceList.add(s3);
-        Branch branch = new Branch(sentenceList);
+        Branch branch = new Branch(sentenceList);;
         assertEquals(false, branch.open);
         assertEquals(2, branch.sentenceList.size());
         assertEquals(0, branch.todoList1.size());
         assertEquals(0, branch.todoList2.size());;
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1; i++) {
             assertEquals(sentenceList.get(i).returnSentence(),
                     branch.simpleList.get(i).returnSentence());
         }
@@ -72,6 +73,7 @@ class BranchTest {
 //        assertEquals(true, branch.sentenceList.get(0).check);
 
         assertEquals("[not (not p)]", branch.returnBranch());
+        assertEquals(PropOperation.notnot, branch.todoList1.get(0).returnOperation());
     }
 
     // p, p or q, not (p or q)
@@ -83,12 +85,12 @@ class BranchTest {
         Branch branch = new Branch(sentenceList);
         assertEquals(true, branch.open);
         assertEquals(3, branch.sentenceList.size());
-//        System.out.println(branch.sentenceList.get(2).returnPriority());
         assertEquals(1, branch.todoList1.size());
         assertEquals(1, branch.todoList2.size());
         assertEquals(1, branch.simpleList.size());
 
         assertEquals("[p, p or q, not (p or q)]", branch.returnBranch());
+        assertEquals(PropOperation.notor, branch.todoList1.get(0).returnOperation());
 
     }
 
