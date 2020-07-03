@@ -31,7 +31,7 @@ public class ParserTest {
     }
 
     @Test
-    void testPSbasicBin() {
+    void testPSbasicIFF() {
         try {
             Sentence giffh = parser.parseSentence("G iff H");
             assertEquals("g iff h", giffh.returnSentence());
@@ -39,6 +39,37 @@ public class ParserTest {
             fail("NO");
         }
     }
+
+    @Test
+    void testPSbasicAND() {
+        try {
+            Sentence kANDw = parser.parseSentence("k AnD W");
+            assertEquals("k and w", kANDw.returnSentence());
+        } catch (Exception e) {
+            fail("Should not have exception");
+        }
+    }
+
+    @Test
+    void testPSbasicOR() {
+        try {
+            Sentence nORe = parser.parseSentence("N oR e");
+            assertEquals("n or e", nORe.returnSentence());
+        } catch (Exception e) {
+            fail("Should not have exception");
+        }
+    }
+
+    @Test
+    void testPSbasicIMPLIES() {
+        try {
+            Sentence fIMPLIESs = parser.parseSentence("f implies s");
+            assertEquals("f implies s", fIMPLIESs.returnSentence());
+        } catch (Exception e) {
+            fail("Should not have exception");
+        }
+    }
+
 
     @Test
     void basicFail() {
@@ -53,9 +84,46 @@ public class ParserTest {
     @Test
     void basicParentheses() {
         try {
-            Sentence x = parser.parseSentence("not (a)");
+            Sentence x = parser.parseSentence("not (a and b)");
+            assertEquals("not (a and b)", x.returnSentence());
+        } catch (Exception e) {
+//            System.out.println(e);
+            fail(e);
+        }
+    }
+
+    @Test
+    void parentheses1() {
+        try {
+            String s = "(not p) implies q";
+            Sentence x = parser.parseSentence(s);
+            assertEquals(s, x.returnSentence());
         } catch (Exception e) {
             fail(e);
         }
     }
+
+    @Test
+    void parentheses2() {
+        try {
+            String s = "m and (not (a and b))";
+            Sentence x = parser.parseSentence(s);
+            assertEquals(s, x.returnSentence());
+        } catch (Exception e) {
+            fail(e);
+        }
+    }
+
+    @Test
+    void parentheses3() {
+        try {
+            String s = "((not u) and t) implies ((not (p or q)) or (not o))";
+            Sentence x = parser.parseSentence(s);
+            assertEquals(s, x.returnSentence());
+        } catch (Exception e) {
+            fail(e);
+        }
+    }
+
+
 }
