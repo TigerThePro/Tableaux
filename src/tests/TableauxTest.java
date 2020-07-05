@@ -2,14 +2,12 @@ package tests;
 
 import Model.Branch;
 import Model.Sentence.Sentence;
-import jdk.jshell.SnippetEvent;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
 import Model.Tableaux;
+import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TableauxTest {
 
