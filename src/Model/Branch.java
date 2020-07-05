@@ -86,6 +86,27 @@ public class Branch {
 
     }
 
+    public String returnBranch2(int n) {
+        String indent = "";
+        for (int i = 0; i< n; i++) {
+            indent = indent + "&emsp; &ensp;";
+        }
+        String thisNode = "[";
+        for (int i = 0; i < sentenceList.size(); i++) {
+            if (i != 0) {
+                thisNode = thisNode + ", &emsp;" +  sentenceList.get(i).returnSentence();
+            } else {
+                thisNode = thisNode + sentenceList.get(i).returnSentence();
+            }
+        }
+        if (left != null && right != null) {
+            thisNode = thisNode + "<br> " +indent + left.returnBranch2(n + 1) +
+                    "<br> " + indent + right.returnBranch2(n + 1);
+        }
+        return thisNode + "]";
+
+    }
+
 
 
     // Helper

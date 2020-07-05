@@ -55,8 +55,6 @@ public class Parser {
     private Sentence iterateInput2(String input, Sentence pSentence) throws Exception{
         try {
             input = input.trim();
-            System.out.println(input);
-
             if (pSentence == null) {
                 // ATOMIC
                 if (input.matches("[a-z]")) {
@@ -64,26 +62,17 @@ public class Parser {
                     // (
                 } else if (input.substring(0,1).equals("(")) {
 
-                    System.out.println("B");
-
                     int end = findEnd(input);
-
-                    System.out.println("found end");
 
                     return iterateInput2(input.substring(end + 1),
                             iterateInput2(input.substring(1, end), null));
                     // NOT
                 } else if (input.substring(0,3).equals("not")) {
 
-                    System.out.println("A");
-
                     return new Sentence("not",
                             iterateInput2(input.substring(3), null));
                     // ATOMIC
                 } else if (input.substring(0, 1).matches("[a-z]") && input.substring(1, 2).equals(" ")) {
-
-                    System.out.println("D");
-
                     return iterateInput2(input.substring(2), new Sentence(input.substring(0,1)));
                 }
             } else {
@@ -92,17 +81,11 @@ public class Parser {
                     return pSentence;
                 }
                 if (input.substring(0, 3).equals("and")) {
-
-                    System.out.println("C");
-
                     return new Sentence(pSentence, "and",
                             iterateInput2(input.substring(3), null));
-
                     // OR
                 } else if(input.substring(0, 2).equals("or")) {
-
                     return new Sentence(pSentence, "or", iterateInput2(input.substring(2), null));
-
                     // IFF
                 } else if (input.substring(0, 3).equals("iff")) {
                     return new Sentence(pSentence, "iff", iterateInput2(input.substring(3), null));
@@ -114,7 +97,6 @@ public class Parser {
             }
             throw new Exception();
         } catch (Exception e) {
-            System.out.println(e);
             throw e;
         }
     }
@@ -123,7 +105,6 @@ public class Parser {
     // Helper finds the end of a parentheses
     private int findEnd(String input) throws Exception{
         for (int i = 1; i < input.length(); i++) {
-            System.out.println(i);
             String s = input.substring(i, i+1);
             if (s.equals(")")) {
                 return i;

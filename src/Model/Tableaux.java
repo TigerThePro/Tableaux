@@ -70,7 +70,7 @@ public class Tableaux {
     // Helper
     // extend two branch
     private void extend2(Sentence sentence, Branch branch) {
-        System.out.println(sentence.returnSentence());
+//        System.out.println(sentence.returnSentence());
         branch.todoList2.remove(0);
         ArrayList<Sentence> leftSentences = new ArrayList<Sentence>();
         ArrayList<Sentence> rightSentences = new ArrayList<Sentence>();
