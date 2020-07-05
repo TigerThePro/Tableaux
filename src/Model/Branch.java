@@ -128,7 +128,6 @@ public class Branch {
     // Check for contradiction for a simple sentence.
     // return true if it's a contradiction
     private boolean checkContra(Sentence sen) {
-        System.out.println(sen.returnSentence());
             Iterator<Sentence> j = simpleList.iterator();
             if (sen.type == Structure.atomic) {
                 while (j.hasNext()) {
